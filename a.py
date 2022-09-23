@@ -1,7 +1,7 @@
 
-greeting = 'Hello'
-name = "Slats"
 
-message = f'{greeting} {name}. Welcome!'
+student = { 'name': 'John', "age": 25, 'courses': ['Math', 'CompSci'] }
 
-print(message)
+for key, value in student.items():
+  print(f"{key}: {value}")
+
