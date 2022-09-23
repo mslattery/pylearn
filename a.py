@@ -1,8 +1,7 @@
 
-#message = """Hello's World. This is a \"test\" longer message"""
-message = 'Hello World'
+greeting = 'Hello'
+name = "Slats"
 
-msg = message.replace("World", "slats")
+message = f'{greeting} {name}. Welcome!'
 
 print(message)
-print(msg)
