@@ -2,7 +2,6 @@ import argparse
 import logging
 import time
 
-
 def comprehend_not():
   squares = []
   for i in range(10):
@@ -25,26 +24,38 @@ def sorted_complex():
   sorted_data = sorted(data, key=lambda x: x["age"])
   logging.debug(sorted_data)
   
-def main():  
+def handleCmdLineRequestedLogLevel(args):
+  '''
+  Handles the cmd line requested log level
+  If none was requested, default to logging.INFO
+  This function follows a pattern in the logging source code to address setting via name vs numeric
+  '''
+  requestedLogLevel = str.upper(args.log) if args.log is not None else logging.INFO
+  result = logging._levelToName.get(requestedLogLevel)
+  if result is not None:
+      print(f"Logging set to {result}")
+      return result
+  else:
+    result = logging._nameToLevel.get(requestedLogLevel)
+    if result is not None:
+      print(f"Logging set to {logging.getLevelName(result)}")
+      return result
+    else:
+      raise ValueError(f'Invalid log level: {args.log}')   
+    
+def setupLogging():
   parser = argparse.ArgumentParser(usage="usage msg")
-  parser.add_argument("-l", "--log", help = "Set Log level")
+  parser.add_argument("-l", "--log", help = "Set Log level, must be one of the Python logging levels")
   args = parser.parse_args()
-  
-  # Handle Logging Level from Command Line
-  level = logging.getLevelName(str.upper(args.log)) if (args.log is not None) else logging.INFO
-  print(f"Logging set to {logging.getLevelName(level)}")
-    
-    #if args.log in [logging.CRITICAL, logging.ERROR, logging.WARNING, logging.INFO, logging.DEBUG]:
-    #  level = args.log
-    #else:
-    #  raise ValueError(f'Invalid log level: {args.log}')   
-    
+  level = handleCmdLineRequestedLogLevel(args)
   #fmt = '%(filename)s:%(lineno)d [%(levelname)s] %(asctime)s - %(message)s'
   fmt = "%(asctime)s — %(name)s — %(levelname)s — %(funcName)s:%(lineno)d — %(message)s"
   logging.basicConfig(level=level, format=fmt)
   logging.info('Started')
+    
+def main():
+  setupLogging()
   start = time.perf_counter()
-  #print(f'{logging.__dict__["ERROR"]}')
   sorted_complex()
   end = time.perf_counter()
   logging.info(f"Ended   {end-start}")
