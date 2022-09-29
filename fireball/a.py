@@ -19,11 +19,15 @@ with open("sample.json", "r") as f:
 shapedData = {}
 for i,fieldName in enumerate(data["fields"]):
   for j,row in enumerate(data["data"]):
-    shapedData[fieldName] = row[i]
+    shapedData[fieldName] = []
+
+for i,fieldName in enumerate(data["fields"]):
+  for j,row in enumerate(data["data"]):
+    shapedData[fieldName].append(row[i])
     
 
 
 print(shapedData)
 #print(data)
-#df = pd.DataFrame(data["data"])
-#print(df)
+df = pd.DataFrame(data["data"])
+print(df)
