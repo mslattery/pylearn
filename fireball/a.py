@@ -1,6 +1,7 @@
 #https://ssd-api.jpl.nasa.gov/doc/fireball.html
 
 import json
+from numpy import append
 import pandas as pd
 import requests
 from pandas.io.json import json_normalize
@@ -12,7 +13,17 @@ from pandas.io.json import json_normalize
 #with open("sample.json", "w") as outputFile:
 #  json.dump(var, outputFile)
 
-df = pd.read_json("sample.json")
+with open("sample.json", "r") as f:
+  data = json.load(f)
 
-#df = pd.read_json(data)
-print(df)
+shapedData = {}
+for i,fieldName in enumerate(data["fields"]):
+  for j,row in enumerate(data["data"]):
+    shapedData[fieldName] = row[i]
+    
+
+
+print(shapedData)
+#print(data)
+#df = pd.DataFrame(data["data"])
+#print(df)
